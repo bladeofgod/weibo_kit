@@ -59,6 +59,9 @@ public class WeiboKitPlugin implements FlutterPlugin, ActivityAware, PluginRegis
         public static final int UNKNOWN = -100;
     }
 
+    ///用于支持定制化权限的问题
+    public static String authority = "";
+
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -268,7 +271,7 @@ public class WeiboKitPlugin implements FlutterPlugin, ActivityAware, PluginRegis
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     try {
                         final ProviderInfo providerInfo = applicationContext.getPackageManager().getProviderInfo(new ComponentName(applicationContext, FileProvider.class), PackageManager.MATCH_DEFAULT_ONLY);
-                        final Uri shareFileUri = FileProvider.getUriForFile(applicationContext, providerInfo.authority, new File(Uri.parse(imageUri).getPath()));
+                        final Uri shareFileUri = FileProvider.getUriForFile(applicationContext, authority, new File(Uri.parse(imageUri).getPath()));
                         applicationContext.grantUriPermission("com.sina.weibo", shareFileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         images.add(shareFileUri);
                     } catch (PackageManager.NameNotFoundException e) {
